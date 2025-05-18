@@ -21,46 +21,46 @@ class SignupPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fieldList = [
-      signUptextFields(
+      SignUpTextFields(
         hintText: 'Username',
         controller: userNameController,
         isPassword: false,
       ),
       SizedBox(height: 10),
-      signUptextFields(
+      SignUpTextFields(
         hintText: 'Password',
         controller: passwordController,
         isPassword: true,
       ),
       SizedBox(height: 10),
-      signUptextFields(
+      SignUpTextFields(
         hintText: 'Confirm Password',
         controller: confirmPasswordController,
         isPassword: true,
         confirmPasswordController: passwordController,
       ),
       SizedBox(height: 10),
-      signUptextFields(
+      SignUpTextFields(
         hintText: 'Email Address',
         controller: emailController,
       ),
       SizedBox(height: 10),
-      signUptextFields(
+      SignUpTextFields(
         hintText: 'ID Number',
         controller: idNumberController,
       ),
       SizedBox(height: 10),
-      signUptextFields(
+      SignUpTextFields(
         hintText: 'Last Name',
         controller: lastNameController,
       ),
       SizedBox(height: 10),
-      signUptextFields(
+      SignUpTextFields(
         hintText: 'First Name',
         controller: firstNameController,
       ),
       SizedBox(height: 10),
-      signUptextFields(
+      SignUpTextFields(
         hintText: 'Middle Initial',
         controller: middleInitialController,
       ),

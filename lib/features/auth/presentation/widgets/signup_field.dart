@@ -1,30 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:exam_app/themes/colors.dart';
 
-class signUptextFields extends StatefulWidget{
-  final String hintText;
+class SignUpTextFields extends StatefulWidget{
+  final String hintText; 
   final TextEditingController controller;
   final bool isPassword;
   final TextInputType keyboardType;
   final TextEditingController ? confirmPasswordController;
 
-  const signUptextFields({
+  const SignUpTextFields({
 
-    Key? key,
+    super.key,
     required this.hintText,
     required this.controller,
     this.isPassword = false,
     this.keyboardType = TextInputType.text,
     this.confirmPasswordController,
 
-  }) :super(key: key);
+  });
 
   @override
-  _signUptextFieldsState createState() => _signUptextFieldsState();
+  _SignUpTextFieldsState createState() => _SignUpTextFieldsState();
 
 }
 
-class _signUptextFieldsState extends State<signUptextFields>{
+class _SignUpTextFieldsState extends State<SignUpTextFields>{
   bool _isObscured = true;
   String? _errorText;
 

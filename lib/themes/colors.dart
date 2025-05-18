@@ -10,4 +10,6 @@ class AppColors {
   static const Color passwordIcon = Color.fromARGB(255, 40, 82, 119);
   static const Color error = Colors.red;
   static const Color white = Colors.white;
+  static const Color lightGrey = Color.fromARGB(255, 237, 240, 247);
+  static const Color optionSelected = Color.fromARGB(255, 127, 141, 177);
 }

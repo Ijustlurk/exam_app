@@ -13,7 +13,7 @@ class CustomButton extends StatelessWidget {
   final FontWeight fontWeight;
 
   const CustomButton({
-    Key? key,
+    super.key,
     required this.text,
     required this.onPressed,
     required this.width,
@@ -24,7 +24,7 @@ class CustomButton extends StatelessWidget {
     this.padding = const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
     required this.fontSize,
     required this.fontWeight
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
