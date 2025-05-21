@@ -12,4 +12,5 @@ class AppColors {
   static const Color white = Colors.white;
   static const Color lightGrey = Color.fromARGB(255, 237, 240, 247);
   static const Color optionSelected = Color.fromARGB(255, 127, 141, 177);
+  static const Color iconFill =  Color.fromARGB(255, 3, 49, 79);
 }

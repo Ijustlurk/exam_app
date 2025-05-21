@@ -1,6 +1,7 @@
 import 'package:exam_app/features/common/widgets/app_bottom_nav_bar.dart';
 import 'package:exam_app/features/common/widgets/exam_filter_options.dart';
-import 'package:exam_app/features/home/models/exam.dart';
+import 'package:exam_app/features/data/models/exams.dart';
+import 'package:exam_app/features/home/presentation/widgets/exam_list.dart';
 import 'package:exam_app/themes/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -12,23 +13,18 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late int _selectedYear;
+  int _selectedYear = -1; // -1 means 'Recent'
   final int _startYear = 2024;
   final int _endYear = 2027;
-  int _selectedSemester = 0; // 0: First Semester, 1: Second Semester
-  int _selectedTerm = 0; // 0: Prelim, 1: Midterm, 2: Final
-  bool _showFilters = true; // Controls filter visibility
+  int? _selectedSemester; // null means no filter
+  int? _selectedTerm; // null means no filter
+  bool _showFilters = false; // Start with filters hidden
   int _selectedNavIndex = 0;
-
   final List<String> _terms = ['Prelim', 'Midterm', 'Final'];
-
-  List<int> get _years =>
-      List.generate(_endYear - _startYear + 1, (i) => _startYear + i);
 
   @override
   void initState() {
     super.initState();
-    _selectedYear = _years.first;
     _showFilters = false; // Start with filters hidden
   }
 
@@ -46,7 +42,9 @@ class _HomePageState extends State<HomePage> {
         actions: [
           IconButton(icon: const Icon(Icons.search), onPressed: () {}),
           IconButton(
-            icon: Icon(_showFilters ? Icons.filter_alt : Icons.filter_alt_outlined),
+            icon: Icon(
+              _showFilters ? Icons.filter_alt : Icons.filter_alt_outlined,
+            ),
             tooltip: _showFilters ? 'Hide Filters' : 'Show Filters',
             onPressed: () {
               setState(() {
@@ -57,18 +55,90 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: SafeArea(
-        child: Column(
+        child: Stack(
           children: [
-            ExamFilterOptions(
-              yearsSelector: _yearsScrollBar(),
-              semesterSelector: _semesterSelector(),
-              termSelector: _termSelector(),
-              show: _showFilters,
+            Column(
+              children: [
+                ExamFilterOptions(
+                  selectedYear: _selectedYear,
+                  startYear: _startYear,
+                  endYear: _endYear,
+                  selectedSemester: _selectedSemester ?? -1,
+                  selectedTerm: _selectedTerm ?? -1,
+                  terms: _terms,
+                  onYearChanged: (year) {
+                    setState(() {
+                      _selectedYear = year;
+                    });
+                  },
+                  onSemesterChanged: (semester) {
+                    setState(() {
+                      _selectedSemester = semester;
+                    });
+                  },
+                  onTermChanged: (term) {
+                    setState(() {
+                      _selectedTerm = term;
+                    });
+                  },
+                  show: _showFilters,
+                  onToggle: () {
+                    setState(() {
+                      _showFilters = !_showFilters;
+                    });
+                  },
+                ),
+                if (_showFilters)
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton.icon(
+                      icon: const Icon(Icons.clear),
+                      label: const Text('Clear Filters'),
+                      onPressed: () {
+                        setState(() {
+                          _selectedYear = -1;
+                          _selectedSemester = null;
+                          _selectedTerm = null;
+                          _showFilters = !_showFilters;
+                        });
+                      },
+                    ),
+                  ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    child: ExamList(exams: _filteredExams()),
+                  ),
+                ),
+              ],
             ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 10),
-                child: _examsList(),
+            Positioned(
+              left: 0,
+              right: 20,
+              bottom: 20, // Just above the bottom nav bar
+              child: Align(
+                alignment: Alignment.bottomRight,
+                child: Container(
+                  width: 150,
+                  height: 60,
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      // TODO: Add navigation or action for the floating button
+                    },
+                    backgroundColor: const Color.fromARGB(255, 220, 227, 241),
+                    elevation: 6,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Icon(Icons.edit, color: Color.fromARGB(255, 0, 0, 0)),
+                        Text(
+                          'Take Exam',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
             ),
           ],
@@ -98,311 +168,34 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _termSelector() {
-    return SizedBox(
-      height: 40,
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          final tabWidth = (constraints.maxWidth) / _terms.length;
-          return Stack(
-            children: [
-              AnimatedPositioned(
-                duration: const Duration(milliseconds: 250),
-                curve: Curves.easeInOut,
-                left: _selectedTerm * tabWidth,
-                top: 0,
-                child: Container(
-                  height: 40,
-                  width: tabWidth,
-                  decoration: BoxDecoration(
-                    color: AppColors.optionSelected,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                ),
-              ),
-              Row(
-                children: List.generate(_terms.length, (index) {
-                  final isSelected = _selectedTerm == index;
-                  return SizedBox(
-                    width: tabWidth,
-                    height: 40,
-                    child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _selectedTerm = index;
-                        });
-                      },
-                      child: Center(
-                        child: Text(
-                          _terms[index],
-                          style: TextStyle(
-                            color: isSelected ? Colors.white : Colors.black,
-                            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                            fontSize: 15,
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                }),
-              ),
-            ],
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _semesterSelector() {
-    return SizedBox(
-      height: 40,
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          final tabWidth =
-              (constraints.maxWidth) / 2; // 24 is the divider width
-          return Stack(
-            children: [
-              AnimatedPositioned(
-                duration: const Duration(milliseconds: 250),
-                curve: Curves.easeInOut,
-                left:
-                    _selectedSemester *
-                    (tabWidth), // 12 is half the divider width
-                top: 0,
-                child: Container(
-                  height: 40,
-                  width: tabWidth,
-                  decoration: BoxDecoration(
-                    color: AppColors.optionSelected,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Expanded(
-                    child: SemesterTab(
-                      title: 'First Semester',
-                      selected: _selectedSemester == 0,
-                      onTap: () {
-                        setState(() {
-                          _selectedSemester = 0;
-                        });
-                      },
-                    ),
-                  ),
-                  Expanded(
-                    child: SemesterTab(
-                      title: 'Second Semester',
-                      selected: _selectedSemester == 1,
-                      onTap: () {
-                        setState(() {
-                          _selectedSemester = 1;
-                        });
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _yearsScrollBar() {
-    return SizedBox(
-      height: 40,
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          final yearCount = _years.length;
-          final tabWidth = 120.0; // Fixed width for each year tab
-          return SizedBox(
-            width: yearCount * tabWidth,
-            child: Stack(
-              children: [
-                AnimatedPositioned(
-                  duration: const Duration(milliseconds: 250),
-                  curve: Curves.easeInOut,
-                  left: _years.indexOf(_selectedYear) * tabWidth,
-                  top: 0,
-                  child: Container(
-                    height: 40,
-                    width: tabWidth,
-                    decoration: BoxDecoration(
-                      color: AppColors.optionSelected,
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
-                ),
-                Row(
-                  children:
-                      _years.map((year) {
-                        final isSelected = year == _selectedYear;
-                        return SizedBox(
-                          width: tabWidth,
-                          height: 40,
-                          child: GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _selectedYear = year;
-                              });
-                            },
-                            child: Center(
-                              child: Text(
-                                'A.Y. $year-${year + 1}',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight:
-                                      isSelected
-                                          ? FontWeight.bold
-                                          : FontWeight.normal,
-                                  color:
-                                      isSelected ? Colors.white : Colors.black,
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                ),
-              ],
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _examsList() {
-    final filtered = mockExams.where((exam) {
-      final yearMatch = exam.schedule.year == _selectedYear;
-      final semesterMatch = exam.semester ==
-          (_selectedSemester == 0 ? 'First Semester' : 'Second Semester');
-      final termMatch = exam.term.toLowerCase() == _terms[_selectedTerm].toLowerCase();
-      return yearMatch && semesterMatch && termMatch;
-    }).toList();
-    if (filtered.isEmpty) {
-      return Center(
-        child: Text('No exams recorded yet.', style: TextStyle(color: Colors.grey)),
-      );
+  List<Exam> _filteredExams() {
+    if (_selectedYear == -1 &&
+        _selectedSemester == null &&
+        _selectedTerm == null) {
+      // Show recent finished exams (sorted by schedule descending)
+      return List<Exam>.from(mockExams.where((exam) => exam.isFinished == true))
+        ..sort((a, b) => b.schedule.compareTo(a.schedule));
+    } else {
+      final filtered =
+          mockExams.where((exam) {
+            final yearMatch =
+                _selectedYear == -1 || exam.schedule.year == _selectedYear;
+            final semesterMatch =
+                _selectedSemester == null ||
+                exam.semester ==
+                    (_selectedSemester == 0
+                        ? 'First Semester'
+                        : 'Second Semester');
+            final termMatch =
+                _selectedTerm == null ||
+                exam.term.toLowerCase() == _terms[_selectedTerm!].toLowerCase();
+            final isFinishedMatch = exam.isFinished == true;
+            return yearMatch && semesterMatch && termMatch && isFinishedMatch;
+          }).toList();
+      if (_selectedYear == -1) {
+        filtered.sort((a, b) => b.schedule.compareTo(a.schedule));
+      }
+      return filtered;
     }
-    return ListView.separated(
-      // Remove shrinkWrap and physics so ListView can scroll in Expanded
-      scrollDirection: Axis.vertical,
-      itemCount: filtered.length,
-      separatorBuilder: (context, i) => const SizedBox(height: 16),
-      itemBuilder: (context, i) {
-        final exam = filtered[i];
-        return Center(
-          child: Container(
-            width: 420,
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: AppColors.lightGrey,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.05),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  exam.title,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text('Subject: ${exam.subject}'),
-                Text('Teacher: ${exam.teacher}'),
-                Text('Schedule: ${exam.schedule.toString().substring(0, 16)}'),
-                Text(
-                  'Duration: ${exam.duration.inHours}h ${exam.duration.inMinutes % 60}m',
-                ),
-                const SizedBox(height: 12),
-                Row(
-                  children: [
-                    if (exam.isActive)
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.green,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: const Text(
-                          'Active',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    if (exam.isFinished)
-                      Container(
-                        margin: const EdgeInsets.only(left: 8),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 8,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: const Text(
-                          'Finished',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
-}
-
-class SemesterTab extends StatelessWidget {
-  final String title;
-  final bool selected;
-  final VoidCallback onTap;
-
-  const SemesterTab({
-    required this.title,
-    required this.selected,
-    required this.onTap,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: 40,
-        width: 150,
-        child: Center(
-          child: Text(
-            title,
-            style: TextStyle(
-              fontWeight: selected ? FontWeight.bold : FontWeight.normal,
-              fontSize: 15,
-              color: selected ? Colors.white : Colors.black,
-            ),
-          ),
-        ),
-      ),
-    );
   }
 }

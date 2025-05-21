@@ -41,7 +41,7 @@ class AppBottomNavBar extends StatelessWidget {
                   width: tabWidth,
                   height: 4,
                   decoration: BoxDecoration(
-                    color: AppColors.optionSelected,
+                    color: AppColors.iconFill,
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -57,7 +57,7 @@ class AppBottomNavBar extends StatelessWidget {
                         children: [
                           Icon(
                             isSelected ? tabs[index].filledIcon : tabs[index].outlinedIcon,
-                            color: isSelected ? const Color.fromARGB(255, 0, 0, 0) : Colors.grey,
+                            color: isSelected ?  AppColors.iconFill : Colors.grey,
                           ),
                           const SizedBox(height: 2),
                           Text(
@@ -65,7 +65,7 @@ class AppBottomNavBar extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                              color: isSelected ? const Color.fromARGB(255, 0, 0, 0) : Colors.grey,
+                              color: isSelected ? AppColors.iconFill : Colors.grey,
                             ),
                           ),
                         ],

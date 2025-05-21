@@ -3,9 +3,11 @@ class Exam {
   final DateTime dateCreated;
   final String teacher;
   final String title;
-  final String term; // 'prelim', 'midterm', 'final'
+  final String term;
   final String subject;
-  final String semester; // e.g. 'First Semester', 'Second Semester'
+  final String semester; 
+  final double scores;
+  final double noOfItems;
   final DateTime schedule;
   final Duration duration;
   final bool isActive;
@@ -22,6 +24,8 @@ class Exam {
     required this.schedule,
     required this.duration,
     required this.isActive,
+    required this.scores,
+    required this.noOfItems,
     required this.isFinished,
   });
 }
@@ -38,50 +42,43 @@ List<Exam> mockExams = [
     semester: 'First Semester',
     schedule: DateTime(2025, 6, 1, 9, 0),
     duration: Duration(hours: 2),
+    scores: 100,
     isActive: true,
-    isFinished: false,
+    isFinished: true,
+    noOfItems: 50,
   ),
-  Exam(
-    examId: '1',
-    dateCreated: DateTime(2025, 5, 18),
-    teacher: 'Prof. Smith',
-    title: 'Algebra Prelim',
-    term: 'Prelim',
-    subject: 'Algebra',
-    semester: 'First Semester',
-    schedule: DateTime(2025, 6, 1, 9, 0),
-    duration: Duration(hours: 2),
-    isActive: true,
-    isFinished: false,
-  ),
-  Exam(
-    examId: '1',
-    dateCreated: DateTime(2025, 5, 18),
-    teacher: 'Prof. Smith',
-    title: 'Algebra Prelim',
-    term: 'Prelim',
-    subject: 'Algebra',
-    semester: 'First Semester',
-    schedule: DateTime(2025, 6, 1, 9, 0),
-    duration: Duration(hours: 2),
-    isActive: true,
-    isFinished: false,
-  ),
-  Exam(
-    examId: '1',
-    dateCreated: DateTime(2025, 5, 18),
-    teacher: 'Guy Smith',
-    title: 'Algebra Prelim',
-    term: 'Prelim',
-    subject: 'Algebra',
-    semester: 'First Semester',
-    schedule: DateTime(2025, 6, 1, 9, 0),
-    duration: Duration(hours: 2),
-    isActive: true,
-    isFinished: false,
-  ),
-  Exam(
+    Exam(
     examId: '2',
+    dateCreated: DateTime(2025, 5, 18),
+    teacher: 'Prof. Smith',
+    title: 'Science Prelim',
+    term: 'Prelim',
+    subject: 'Algebra',
+    semester: 'First Semester',
+    schedule: DateTime(2025, 7, 1, 9, 0),
+    duration: Duration(hours: 2),
+    scores: 100,
+    isActive: true,
+    isFinished: true,
+    noOfItems: 50,
+  ),
+    Exam(
+    examId: '3',
+    dateCreated: DateTime(2025, 5, 18),
+    teacher: 'Prof. Smith',
+    title: 'Chemistry Prelim',
+    term: 'Prelim',
+    subject: 'Algebra',
+    semester: 'First Semester',
+    schedule: DateTime(2025, 6, 1, 9, 0),
+    duration: Duration(hours: 2),
+    scores: 100,
+    isActive: true,
+    isFinished: true,
+    noOfItems: 50,
+  ),
+  Exam(
+    examId: '4',
     dateCreated: DateTime(2025, 5, 10),
     teacher: 'Prof. Lee',
     title: 'Physics Midterm',
@@ -92,6 +89,8 @@ List<Exam> mockExams = [
     duration: Duration(hours: 1, minutes: 30),
     isActive: false,
     isFinished: true,
+    scores: 85,
+    noOfItems: 100,
   ),
   // Add more mock exams as needed
 ];
