@@ -1,5 +1,6 @@
-
+import 'package:exam_app/features/profile/presentation/pages/profile_main.dart';
 import 'package:exam_app/features/splash/presentation/pages/splash_page.dart';
+import 'package:exam_app/main_scaffold.dart';
 import 'package:flutter/material.dart';
 
 void main() {

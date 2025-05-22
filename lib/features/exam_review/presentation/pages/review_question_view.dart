@@ -1,25 +1,44 @@
-import 'package:exam_app/features/data/models/exams/answer_key_and_choices/choice.dart';
-import 'package:exam_app/features/data/models/exams/questions/question.dart';
+import 'package:exam_app/features/data/models/exams/answer_key_and_choices/choice.dart' as choicesModel;
+import 'package:exam_app/features/data/models/exams/questions/question.dart' as qmodel;
+import 'package:exam_app/features/data/models/exams/student_answers/student_answers.dart';
 import 'package:flutter/material.dart';
 
-class ReviewQuestionView extends StatelessWidget {
-  final Question question;
-  final List<Choice> choices;
+class ReviewQuestionView extends StatefulWidget {
+  final List<qmodel.Question> questions;
+  final List<StudentAnswers> studentAnswers;
   final bool showCorrectness;
-  final String studentAnswer;
-  final int questionNumber;
+  final int initialQuestionIndex;
 
   const ReviewQuestionView({
     super.key,
-    required this.question,
-    required this.choices,
+    required this.questions,
+    required this.studentAnswers,
     this.showCorrectness = true,
-    required this.studentAnswer,
-    required this.questionNumber,
+    this.initialQuestionIndex = 0,
   });
 
   @override
+  State<ReviewQuestionView> createState() => _ReviewQuestionViewState();
+}
+
+class _ReviewQuestionViewState extends State<ReviewQuestionView> {
+  late int _currentIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentIndex = widget.initialQuestionIndex;
+    
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final question = widget.questions[_currentIndex];
+    final choices = choicesModel.mockChoices
+        .where((c) => c.questionId == question.questionId)
+        .toList();
+    final studentAnswer = widget.studentAnswers[_currentIndex];
+    final questionNumber = _currentIndex + 1;
     return Scaffold(
       appBar: AppBar(
         title: Text('Question $questionNumber'),
@@ -36,6 +55,37 @@ class ReviewQuestionView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Navigation Row
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.arrow_left),
+                    onPressed: _currentIndex > 0
+                        ? () {
+                            setState(() {
+                              _currentIndex--;
+                            });
+                          }
+                        : null,
+                  ),
+                  Text(
+                    'Question $questionNumber',
+                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.arrow_right),
+                    onPressed: _currentIndex < widget.questions.length - 1
+                        ? () {
+                            setState(() {
+                              _currentIndex++;
+                            });
+                          }
+                        : null,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
               Text(
                 question.questionText,
                 style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -43,10 +93,10 @@ class ReviewQuestionView extends StatelessWidget {
               const SizedBox(height: 16),
               ...List.generate(choices.length, (index) {
                 final choice = choices[index];
-                final isStudentChoice = studentAnswer;
+                final isStudentChoice = studentAnswer.studentAnswer;
                 final isCorrectAnswer = choice.correctAnswer;
-                final studentGotCorrect = showCorrectness && isStudentChoice == choice.choiceId && isCorrectAnswer;
-                final studentGotIncorrect = showCorrectness && isStudentChoice == choice.choiceId && !isCorrectAnswer;
+                final studentGotCorrect = widget.showCorrectness && isStudentChoice == choice.choiceId && isCorrectAnswer;
+                final studentGotIncorrect = widget.showCorrectness && isStudentChoice == choice.choiceId && !isCorrectAnswer;
                 Color fillColor = Colors.white;
                 Color textColor = Colors.black;
                 Color borderColor = Colors.grey[300]!;
@@ -99,7 +149,7 @@ class ReviewQuestionView extends StatelessWidget {
                                       fontSize: 16,
                                     ),
                                   ),
-                                  if (choice.choiceId == studentAnswer)
+                                  if (choice.choiceId == isStudentChoice)
                                     const Padding(
                                       padding: EdgeInsets.only(top: 4.0),
                                       child: Text(

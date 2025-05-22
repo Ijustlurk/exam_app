@@ -1,20 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:exam_app/features/home/presentation/pages/home_page.dart';
+import 'package:exam_app/features/profile/presentation/pages/profile_main.dart';
 import 'package:exam_app/themes/colors.dart';
 
-class AppBottomNavBar extends StatelessWidget {
-  final int currentIndex;
-  final ValueChanged<int> onTap;
-  final List<BottomNavTab> tabs;
+class MainScaffold extends StatefulWidget {
+  const MainScaffold({super.key});
 
-  const AppBottomNavBar({
-    Key? key,
-    required this.currentIndex,
-    required this.onTap,
-    required this.tabs,
-  }) : super(key: key);
+  @override
+  State<MainScaffold> createState() => _MainScaffoldState();
+}
+
+class _MainScaffoldState extends State<MainScaffold> {
+  int _selectedIndex = 0;
+
+  final List<Widget> _pages = [
+    HomePage(showNavBar: false),
+    ProfileMain(showNavBar: false),
+  ];
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      body: _pages[_selectedIndex],
+      bottomNavigationBar: _buildAppBottomNavBar(),
+    );
+  }
+
+  Widget _buildAppBottomNavBar() {
+    const tabs = [
+      BottomNavTab(
+        label: 'Exams Taken',
+        outlinedIcon: Icons.folder_open_outlined,
+        filledIcon: Icons.folder,
+      ),
+      BottomNavTab(
+        label: 'Profile',
+        outlinedIcon: Icons.person_outline,
+        filledIcon: Icons.person,
+      ),
+    ];
     return Container(
       height: 60,
       decoration: BoxDecoration(
@@ -35,7 +59,7 @@ class AppBottomNavBar extends StatelessWidget {
               AnimatedPositioned(
                 duration: const Duration(milliseconds: 250),
                 curve: Curves.easeInOut,
-                left: currentIndex * tabWidth,
+                left: _selectedIndex * tabWidth,
                 bottom: 0,
                 child: Container(
                   width: tabWidth,
@@ -48,16 +72,20 @@ class AppBottomNavBar extends StatelessWidget {
               ),
               Row(
                 children: List.generate(tabs.length, (index) {
-                  final isSelected = index == currentIndex;
+                  final isSelected = index == _selectedIndex;
                   return Expanded(
                     child: InkWell(
-                      onTap: () => onTap(index),
+                      onTap: () {
+                        setState(() {
+                          _selectedIndex = index;
+                        });
+                      },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(
                             isSelected ? tabs[index].filledIcon : tabs[index].outlinedIcon,
-                            color: isSelected ?  AppColors.iconFill : Colors.grey,
+                            color: isSelected ? AppColors.iconFill : Colors.grey,
                           ),
                           const SizedBox(height: 2),
                           Text(

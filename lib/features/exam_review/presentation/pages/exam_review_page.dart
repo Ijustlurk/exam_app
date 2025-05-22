@@ -5,7 +5,7 @@ import 'package:exam_app/features/common/widgets/question_navigation_grid.dart';
 import 'package:exam_app/themes/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:exam_app/features/exam_review/presentation/pages/review_question_view.dart';
-import 'package:exam_app/features/data/models/exams/answer_key_and_choices/choice.dart';
+import 'package:exam_app/features/data/models/exams/answer_key_and_choices/choice.dart' as choicesModel;
 
 class ExamReviewPage extends StatefulWidget {
   final String examId;
@@ -18,6 +18,7 @@ class ExamReviewPage extends StatefulWidget {
 class _ExamReviewPageState extends State<ExamReviewPage> {
   late final List<qmodel.Question> _questions;
   late final List<ansmodel.StudentAnswers> _studentAnswers;
+  late final List<choicesModel.Choice> _choices;
   Exam? _exam;
   int _currentIndex = 0;
 
@@ -26,6 +27,7 @@ class _ExamReviewPageState extends State<ExamReviewPage> {
     super.initState();
     _questions = qmodel.mockQuestions.where((q) => q.examId == widget.examId).toList();
     _studentAnswers = ansmodel.mockQuestions.where((a) => a.examId == widget.examId).toList();
+    _choices = choicesModel.mockChoices.where((c) => c.examId == widget.examId).toList();
     final found = mockExams.where((e) => e.examId == widget.examId);
     _exam = found.isNotEmpty ? found.first : null;
   }
@@ -61,7 +63,7 @@ class _ExamReviewPageState extends State<ExamReviewPage> {
                   currentIndex: _currentIndex,
                   onQuestionSelected: (index) {
                     final question = _questions[index];
-                    final choices = mockChoices.where((c) => c.examId == question.examId && c.questionId == question.questionId).toList();
+                    final choices = _choices.where((c) => c.examId == question.examId && c.questionId == question.questionId).toList();
                     // Find the selected answer index for this question
                     ansmodel.StudentAnswers? answer;
                     try {
@@ -77,11 +79,10 @@ class _ExamReviewPageState extends State<ExamReviewPage> {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (context) => ReviewQuestionView(
-                          question: question,
-                          choices: choices,
-                          studentAnswer: _studentAnswers[index].studentAnswer,
+                          questions: _questions,
                           showCorrectness: (_exam?.isFinished ?? true),
-                          questionNumber: index + 1,
+                          studentAnswers: _studentAnswers,
+                          initialQuestionIndex: index,
                         ),
                       ),
                     );

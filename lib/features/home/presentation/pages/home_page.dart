@@ -1,12 +1,14 @@
-import 'package:exam_app/features/common/widgets/app_bottom_nav_bar.dart';
+
 import 'package:exam_app/features/common/widgets/exam_filter_options.dart';
 import 'package:exam_app/features/data/models/exams.dart';
 import 'package:exam_app/features/home/presentation/widgets/exam_list.dart';
 import 'package:exam_app/themes/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:exam_app/features/profile/presentation/pages/profile_main.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final bool showNavBar;
+  const HomePage({super.key, this.showNavBar = true});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -143,27 +145,6 @@ class _HomePageState extends State<HomePage> {
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: AppBottomNavBar(
-        currentIndex: _selectedNavIndex,
-        onTap: (index) {
-          setState(() {
-            _selectedNavIndex = index;
-            // Navigation logic can be added here
-          });
-        },
-        tabs: const [
-          BottomNavTab(
-            label: 'Exams Taken',
-            outlinedIcon: Icons.folder_open_outlined,
-            filledIcon: Icons.folder,
-          ),
-          BottomNavTab(
-            label: 'Profile',
-            outlinedIcon: Icons.person_outline,
-            filledIcon: Icons.person,
-          ),
-        ],
       ),
     );
   }

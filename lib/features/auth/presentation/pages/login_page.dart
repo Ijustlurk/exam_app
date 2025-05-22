@@ -1,6 +1,7 @@
 import 'package:exam_app/features/common/button.dart';
 import 'package:exam_app/features/home/presentation/pages/home_page.dart';
 import 'package:exam_app/features/auth/presentation/pages/signup_page.dart';
+import 'package:exam_app/main_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:exam_app/themes/colors.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -202,7 +203,7 @@ class _LoginPageState extends State<LoginPage> {
       context,
       PageTransition(
         type: PageTransitionType.leftToRight,
-        child: const HomePage(),
+        child: const MainScaffold(),
       ),
     );
   }

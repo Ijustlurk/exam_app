@@ -10,13 +10,13 @@ class QuestionNavigationGrid extends StatelessWidget {
   final bool showCorrectness;
 
   const QuestionNavigationGrid({
-    Key? key,
+    super.key,
     required this.questionCount,
     required this.currentIndex, //current question index
     required this.onQuestionSelected,
     required this.studentAnswers,
     this.showCorrectness = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

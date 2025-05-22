@@ -24,7 +24,7 @@ class Exam {
     required this.schedule,
     required this.duration,
     required this.isActive,
-    required this.scores,
+    this.scores = 0,
     required this.noOfItems,
     required this.isFinished,
   });
