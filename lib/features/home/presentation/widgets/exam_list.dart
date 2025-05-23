@@ -65,13 +65,14 @@ class ExamList extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     GestureDetector( //review button
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => ExamReviewPage(examId: exam.examId),
-                          ),
-                        );
-                      },
+                      onTap: exam.isApprovedforReview
+                          ? () {
+                              Navigator.of(context).pushNamed(
+                                '/exam-review',
+                                arguments: {'examId': exam.examId},
+                              );
+                            }
+                          : null,
                       child: Container(
                         height: 45,
                         width: 100,
@@ -81,7 +82,7 @@ class ExamList extends StatelessWidget {
                           vertical: 4,
                         ),
                         decoration: BoxDecoration(
-                          color: Colors.green,
+                          color: exam.isApprovedforReview ? Colors.green : Colors.grey,
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: const Text(

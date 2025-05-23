@@ -64,7 +64,6 @@ class _ExamReviewPageState extends State<ExamReviewPage> {
                   onQuestionSelected: (index) {
                     final question = _questions[index];
                     final choices = _choices.where((c) => c.examId == question.examId && c.questionId == question.questionId).toList();
-                    // Find the selected answer index for this question
                     ansmodel.StudentAnswers? answer;
                     try {
                       answer = _studentAnswers.firstWhere((a) => a.questionId == question.questionId);
@@ -76,15 +75,14 @@ class _ExamReviewPageState extends State<ExamReviewPage> {
                       selectedChoiceIndex = choices.indexWhere((c) => c.choiceId == answer!.studentAnswer.toString());
                       if (selectedChoiceIndex == -1) selectedChoiceIndex = null;
                     }
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => ReviewQuestionView(
-                          questions: _questions,
-                          showCorrectness: (_exam?.isFinished ?? true),
-                          studentAnswers: _studentAnswers,
-                          initialQuestionIndex: index,
-                        ),
-                      ),
+                    Navigator.of(context).pushNamed(
+                      '/review-question',
+                      arguments: {
+                        'questions': _questions,
+                        'studentAnswers': _studentAnswers,
+                        'showCorrectness': (_exam?.isFinished ?? true),
+                        'initialQuestionIndex': index,
+                      },
                     );
                   },
                   studentAnswers: _studentAnswers,

@@ -1,5 +1,5 @@
+import 'package:exam_app/features/auth/presentation/pages/login_page.dart';
 import 'package:flutter/material.dart';
-import 'intro_page.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -17,12 +17,7 @@ class _SplashPageState extends State<SplashPage> {
 
   void _navigateToIntro() async {
     await Future.delayed(const Duration(seconds: 3));
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const IntroPage(),
-      ),
-    );
+    Navigator.pushReplacementNamed(context, '/login');
   }
 
   @override

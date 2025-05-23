@@ -1,6 +1,7 @@
+/// The LoginPage class in Dart represents a login page with text fields for username and password,
+/// login button, and social media login buttons.
 import 'package:exam_app/features/common/button.dart';
 import 'package:exam_app/features/home/presentation/pages/home_page.dart';
-import 'package:exam_app/features/auth/presentation/pages/signup_page.dart';
 import 'package:exam_app/main_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:exam_app/themes/colors.dart';
@@ -35,11 +36,7 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               children: [
                 SizedBox(height: 50),
-                Image.asset(
-                  'assets/icons/logo.png',
-                  height: 100,
-                  width: 100,
-                ),
+                Image.asset('assets/icons/logo.png', height: 100, width: 100),
                 Column(
                   children: [
                     const Text(
@@ -84,43 +81,6 @@ class _LoginPageState extends State<LoginPage> {
                       fontWeight: FontWeight.w600,
                     ),
                     const SizedBox(height: 60),
-                    _loginDivider(),
-                    const SizedBox(height: 50),
-                    _socialMediaLoginButtons(),
-                    const SizedBox(height: 60),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "No account yet?",
-                          style: TextStyle(
-                            color: AppColors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                        const SizedBox(width: 5),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pushReplacement(
-                              context,
-                              PageTransition(
-                                type: PageTransitionType.leftToRight,
-                                child: SignupPage(),
-                              ),
-                            );
-                          },
-                          child: const Text(
-                            "Create an Account",
-                            style: TextStyle(
-                              color: AppColors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
                   ],
                 ),
               ],
@@ -166,46 +126,8 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Row _loginDivider() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Expanded(
-          child: Divider(
-            color: Colors.white,
-            thickness: 1,
-            indent: 40,
-            endIndent: 40,
-          ),
-        ),
-        Text(
-          'Or login via',
-          style: TextStyle(
-            color: AppColors.textFieldFill,
-            fontWeight: FontWeight.w200,
-            fontSize: 18,
-          ),
-        ),
-        Expanded(
-          child: Divider(
-            color: Colors.white,
-            thickness: 1,
-            indent: 40,
-            endIndent: 40,
-          ),
-        ),
-      ],
-    );
-  }
-
   void _goToHomePage() {
-    Navigator.pushReplacement(
-      context,
-      PageTransition(
-        type: PageTransitionType.leftToRight,
-        child: const MainScaffold(),
-      ),
-    );
+    Navigator.pushReplacementNamed(context, '/main');
   }
 
   Widget textFields({

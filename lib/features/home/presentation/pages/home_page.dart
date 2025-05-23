@@ -1,4 +1,3 @@
-
 import 'package:exam_app/features/common/widgets/exam_filter_options.dart';
 import 'package:exam_app/features/data/models/exams.dart';
 import 'package:exam_app/features/home/presentation/widgets/exam_list.dart';
@@ -34,7 +33,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Exams Taken'),
+        title: const Text('Review Exams'),
         backgroundColor: AppColors.lightGrey,
         titleTextStyle: const TextStyle(
           fontSize: 20,
@@ -125,7 +124,7 @@ class _HomePageState extends State<HomePage> {
                   height: 60,
                   child: FloatingActionButton(
                     onPressed: () {
-                      // TODO: Add navigation or action for the floating button
+                      Navigator.of(context).pushNamed('/available-exams');
                     },
                     backgroundColor: const Color.fromARGB(255, 220, 227, 241),
                     elevation: 6,

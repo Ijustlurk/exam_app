@@ -21,7 +21,10 @@ class _MainScaffoldState extends State<MainScaffold> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_selectedIndex],
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _pages,
+      ),
       bottomNavigationBar: _buildAppBottomNavBar(),
     );
   }
@@ -29,7 +32,7 @@ class _MainScaffoldState extends State<MainScaffold> {
   Widget _buildAppBottomNavBar() {
     const tabs = [
       BottomNavTab(
-        label: 'Exams Taken',
+        label: 'Review Exams',
         outlinedIcon: Icons.folder_open_outlined,
         filledIcon: Icons.folder,
       ),

@@ -12,6 +12,7 @@ class Exam {
   final Duration duration;
   final bool isActive;
   final bool isFinished;
+  final bool isApprovedforReview;
 
   Exam({
     required this.examId,
@@ -27,6 +28,7 @@ class Exam {
     this.scores = 0,
     required this.noOfItems,
     required this.isFinished,
+    required this.isApprovedforReview,
   });
 }
 
@@ -42,10 +44,11 @@ List<Exam> mockExams = [
     semester: 'First Semester',
     schedule: DateTime(2025, 6, 1, 9, 0),
     duration: Duration(hours: 2),
-    scores: 100,
+    scores: 2,
     isActive: true,
     isFinished: true,
-    noOfItems: 50,
+    noOfItems: 6,
+    isApprovedforReview: true,
   ),
     Exam(
     examId: '2',
@@ -60,6 +63,7 @@ List<Exam> mockExams = [
     scores: 100,
     isActive: true,
     isFinished: true,
+    isApprovedforReview: false,
     noOfItems: 50,
   ),
     Exam(
@@ -75,6 +79,7 @@ List<Exam> mockExams = [
     scores: 100,
     isActive: true,
     isFinished: true,
+    isApprovedforReview: false,
     noOfItems: 50,
   ),
   Exam(
@@ -91,6 +96,7 @@ List<Exam> mockExams = [
     isFinished: true,
     scores: 85,
     noOfItems: 100,
+    isApprovedforReview: false
   ),
   // Add more mock exams as needed
 ];
