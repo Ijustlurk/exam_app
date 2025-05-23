@@ -10,7 +10,7 @@ class ProfileMain extends StatefulWidget {
 }
 
 class _ProfileMainState extends State<ProfileMain> {
-  int _selectedNavIndex = 1; 
+
   bool _isDarkMode = false;// Default to Profile tab
   @override
   void initState() {

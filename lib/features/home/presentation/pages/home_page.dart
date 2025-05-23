@@ -3,7 +3,6 @@ import 'package:exam_app/features/data/models/exams.dart';
 import 'package:exam_app/features/home/presentation/widgets/exam_list.dart';
 import 'package:exam_app/themes/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:exam_app/features/profile/presentation/pages/profile_main.dart';
 
 class HomePage extends StatefulWidget {
   final bool showNavBar;
@@ -20,7 +19,6 @@ class _HomePageState extends State<HomePage> {
   int? _selectedSemester; // null means no filter
   int? _selectedTerm; // null means no filter
   bool _showFilters = false; // Start with filters hidden
-  int _selectedNavIndex = 0;
   final List<String> _terms = ['Prelim', 'Midterm', 'Final'];
 
   @override

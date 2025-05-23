@@ -1,4 +1,4 @@
-import 'package:exam_app/themes/colors.dart';
+
 import 'package:flutter/material.dart';
 import 'package:exam_app/features/data/models/exams/student_answers/student_answers.dart';
 
@@ -31,7 +31,6 @@ class QuestionNavigationGrid extends StatelessWidget {
       ),
       itemCount: questionCount,
       itemBuilder: (context, index) {
-        final isSelected = index == currentIndex;
         // Find the answer for this question (questionId is index+1 as string)
         StudentAnswers? answer;
         try {

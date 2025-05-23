@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:exam_app/features/data/models/exams.dart';
 import 'package:exam_app/themes/colors.dart';
-import 'package:exam_app/features/exam_review/presentation/pages/exam_review_page.dart';
 
 class ExamList extends StatelessWidget {
   final List<Exam> exams;
   final String emptyMessage;
 
   const ExamList({
-    Key? key,
+    super.key,
     required this.exams,
     this.emptyMessage = 'No exams recorded yet.',
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

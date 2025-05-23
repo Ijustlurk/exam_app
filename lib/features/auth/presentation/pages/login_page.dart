@@ -1,12 +1,8 @@
-/// The LoginPage class in Dart represents a login page with text fields for username and password,
-/// login button, and social media login buttons.
+
 import 'package:exam_app/features/common/button.dart';
-import 'package:exam_app/features/home/presentation/pages/home_page.dart';
-import 'package:exam_app/main_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:exam_app/themes/colors.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:page_transition/page_transition.dart';
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -90,42 +86,6 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-
-  Padding _socialMediaLoginButtons() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 40, right: 40),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Icon(
-            FontAwesomeIcons.facebook,
-            color: AppColors.white,
-            size: 45,
-            shadows: [
-              Shadow(
-                color: const Color.fromARGB(64, 0, 0, 0),
-                offset: const Offset(0, 5),
-                blurRadius: 16,
-              ),
-            ],
-          ),
-          Icon(
-            FontAwesomeIcons.google,
-            color: AppColors.white,
-            size: 45,
-            shadows: [
-              Shadow(
-                color: const Color.fromARGB(64, 0, 0, 0),
-                offset: const Offset(0, 5),
-                blurRadius: 16,
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
   void _goToHomePage() {
     Navigator.pushReplacementNamed(context, '/main');
   }

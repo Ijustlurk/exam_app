@@ -1,4 +1,4 @@
-import 'package:exam_app/features/auth/presentation/pages/login_page.dart';
+
 import 'package:flutter/material.dart';
 
 class SplashPage extends StatefulWidget {
