@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:exam_app/routes.dart';
 import 'package:exam_app/features/auth/presentation/login_page.dart';
 import 'package:exam_app/features/exam_review/presentation/exam_review_page.dart';
 import 'package:exam_app/features/exam_review/presentation/review_question_view.dart';
@@ -10,6 +9,23 @@ import 'package:exam_app/features/profile/presentation/profile_main.dart';
 import 'package:exam_app/features/splash/presentation/splash_page.dart';
 import 'package:exam_app/main_scaffold.dart';
 
+class AppRoutes {
+  static const splash = '/splash';
+  static const login = '/login';
+  static const main = '/main';
+  static const home = '/home';
+  static const profile = '/profile';
+  static const findExam = '/find-exam';
+  static const availableExams = '/available-exams';
+  static const examReview = '/exam-review';
+  static const reviewQuestion = '/review-question';
+  static const examSend = '/exam-send';
+  static const examReceive = '/exam-receive';
+  static const examShare = '/exam-share';
+  // Add more as needed
+}
+
+// Centralized app routes and onGenerateRoute for use in main.dart
 Route<dynamic>? appOnGenerateRoute(RouteSettings settings) {
   if (settings.name == AppRoutes.examReview) {
     final args = settings.arguments as Map<String, dynamic>;
@@ -40,21 +56,3 @@ Map<String, WidgetBuilder> appRoutes = {
   AppRoutes.availableExams: (context) => const AvailableExams(),
   AppRoutes.examShare: (context) => const ExamShare(),
 };
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      initialRoute: AppRoutes.splash,
-      routes: appRoutes,
-      onGenerateRoute: appOnGenerateRoute,
-    );
-  }
-}
-
-void main() {
-  runApp(const MyApp());
-}

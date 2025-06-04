@@ -1,4 +1,4 @@
-import 'package:exam_app/themes/colors.dart';
+import 'package:exam_app/core/themes/colors.dart';
 import 'package:flutter/material.dart';
 
 class ProfileMain extends StatefulWidget {

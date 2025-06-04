@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:exam_app/features/data/models/exams/student_answers/student_answers.dart';
+import 'package:exam_app/core/models/exams/student_answers/student_answers.dart';
 
 class QuestionNavigationGrid extends StatelessWidget {
   final int questionCount;

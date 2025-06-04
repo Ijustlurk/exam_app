@@ -1,7 +1,8 @@
+import 'package:exam_app/features/home/presentation/home_page.dart';
 import 'package:flutter/material.dart';
-import 'package:exam_app/features/home/presentation/pages/home_page.dart';
-import 'package:exam_app/features/profile/presentation/pages/profile_main.dart';
-import 'package:exam_app/themes/colors.dart';
+import 'package:exam_app/features/profile/presentation/profile_main.dart';
+import 'package:exam_app/core/themes/colors.dart';
+
 
 class MainScaffold extends StatefulWidget {
   const MainScaffold({super.key});
