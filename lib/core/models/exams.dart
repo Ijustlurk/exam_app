@@ -28,7 +28,7 @@ class Exam {
     this.scores = 0,
     required this.noOfItems,
     required this.isFinished,
-    required this.isApprovedforReview,
+    this.isApprovedforReview = false,
   });
 }
 

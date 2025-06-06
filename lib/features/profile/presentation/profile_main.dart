@@ -1,5 +1,6 @@
 import 'package:exam_app/core/themes/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:exam_app/routes.dart';
 
 class ProfileMain extends StatefulWidget {
   final bool showNavBar;
@@ -89,13 +90,9 @@ class _ProfileMainState extends State<ProfileMain> {
                 ProfileOptionTile(
                   icon: Icons.share_outlined,
                   text: 'Exam Sharing',
-                  onTap: () {},
-                ),
-                const SizedBox(height: 20),
-                ProfileOptionTile(
-                  icon: Icons.stacked_bar_chart_rounded,
-                  text: 'Exam Statistics',
-                  onTap: () {},
+                  onTap: () async {
+                    await _shareDialog(context);
+                  },
                 ),
                 const SizedBox(height: 20),
                 ProfileOptionTile(
@@ -142,6 +139,54 @@ class _ProfileMainState extends State<ProfileMain> {
         ],
       ),
     );
+  }
+
+  Future<dynamic> _shareDialog(BuildContext context) async {
+    return await showDialog(
+                    context: context,
+                    builder: (context) => Dialog(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(24.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text('Exam Sharing', style: TextStyle(fontSize: 20)),
+                            const SizedBox(height: 24),
+                            Container(
+                              decoration: BoxDecoration(
+                                color: AppColors.lightGrey,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: ListTile(
+                                leading: Icon(Icons.send, color: const Color.fromARGB(255, 122, 140, 155), size: 32),
+                                title: Text('Send'),
+                                onTap: () {
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).pushNamed('/exam-send');
+                                },
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            Container(
+                              decoration: BoxDecoration(
+                                color: AppColors.lightGrey,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: ListTile(
+                                leading: Icon(Icons.download, color:  const Color.fromARGB(255, 122, 140, 155), size: 32),
+                                title: Text('Receive',),
+                                onTap: () {
+                                  Navigator.of(context).pop();
+                                  Navigator.of(context).pushNamed('/exam-receive');
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
   }
 }
 

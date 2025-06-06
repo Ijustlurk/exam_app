@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:exam_app/core/themes/colors.dart';
 
-class MyWidget extends StatefulWidget {
-  const MyWidget({super.key});
+class ExamSend extends StatefulWidget {
+  const ExamSend({super.key});
 
   @override
-  State<MyWidget> createState() => _MyWidgetState();
+  State<ExamSend> createState() => _ExamSendState();
 }
 
-class _MyWidgetState extends State<MyWidget> {
+class _ExamSendState extends State<ExamSend> {
   @override
   Widget build(BuildContext context) {
     return const Placeholder();

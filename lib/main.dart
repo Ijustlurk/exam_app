@@ -1,9 +1,10 @@
+import 'package:exam_app/features/exam_sharing/presentation/exam_receive.dart';
+import 'package:exam_app/features/exam_sharing/presentation/exam_send.dart';
 import 'package:flutter/material.dart';
 import 'package:exam_app/routes.dart';
 import 'package:exam_app/features/auth/presentation/login_page.dart';
 import 'package:exam_app/features/exam_review/presentation/exam_review_page.dart';
 import 'package:exam_app/features/exam_review/presentation/review_question_view.dart';
-import 'package:exam_app/features/exam_sharing/presentation/exam_share.dart';
 import 'package:exam_app/features/exam_taking/presentation/available_exams.dart';
 import 'package:exam_app/features/home/presentation/home_page.dart';
 import 'package:exam_app/features/profile/presentation/profile_main.dart';
@@ -38,7 +39,8 @@ Map<String, WidgetBuilder> appRoutes = {
   AppRoutes.home: (context) => const HomePage(),
   AppRoutes.profile: (context) => const ProfileMain(),
   AppRoutes.availableExams: (context) => const AvailableExams(),
-  AppRoutes.examShare: (context) => const ExamShare(),
+  AppRoutes.examSend: (context) => const ExamSend(), 
+  AppRoutes.examReceive: (context) => const ExamReceive(), 
 };
 
 class MyApp extends StatelessWidget {
