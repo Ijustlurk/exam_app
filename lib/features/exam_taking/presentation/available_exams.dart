@@ -1,3 +1,4 @@
+import 'package:exam_app/core/models/exams.dart';
 import 'package:exam_app/core/themes/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -10,22 +11,22 @@ class AvailableExams extends StatefulWidget {
 
 class _AvailableExamsState extends State<AvailableExams> {
   int _selectedFilter = 0; // 0: Saved Exams, 1: Online Exams
-  List<String> _savedExams = [];
-  List<String> _onlineExams = [];
   String _searchQuery = '';
 
   @override
   void initState() {
     super.initState();
-    // Example: populate with empty lists or mock data
-    _savedExams = [];
-    _onlineExams = [];
+    // Populate with mock exam titles from the model
+  }
+
+  List<Exam> _filteredExamObjects() {
+    final exams = _selectedFilter == 0 ? mockExams : <Exam>[];
+    return exams.where((exam) => exam.title.toLowerCase().contains(_searchQuery.toLowerCase())).toList();
   }
 
   @override
   Widget build(BuildContext context) {
-    final exams = _selectedFilter == 0 ? _savedExams : _onlineExams;
-    final filteredExams = exams.where((exam) => exam.toLowerCase().contains(_searchQuery.toLowerCase())).toList();
+    final filteredExamObjects = _filteredExamObjects();
     return Scaffold(
       appBar: AppBar(
         title: Text('Available Exams'),
@@ -71,22 +72,84 @@ class _AvailableExamsState extends State<AvailableExams> {
             const SizedBox(height: 16),
             _filterBySavedOrOnline(),
             const SizedBox(height: 24),
-            Expanded(
-              child: filteredExams.isEmpty
-                  ? Center(child: Text('No exams available, \nor try connecting to the Internet,\n or click to receive an exam.', style: TextStyle(color: Colors.grey), textAlign: TextAlign.center,))
-                  : ListView.builder(
-                      itemCount: filteredExams.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text(filteredExams[index]),
-                        );
-                      },
-                    ),
-            ),
+            _savedExamsList(filteredExamObjects),
           ],
         ),
       ),
     );
+  }
+
+  Expanded _savedExamsList(List<Exam> filteredExamObjects) {
+    return Expanded(
+            child: filteredExamObjects.isEmpty
+                ? Center(
+                    child: Text(
+                      'No exams available, \nor try connecting to the Internet,\n or click to receive an exam.',
+                      style: TextStyle(color: Colors.grey),
+                      textAlign: TextAlign.center,
+                    ),
+                  )
+                : ListView.builder(
+                    itemCount: filteredExamObjects.length,
+                    itemBuilder: (context, index) {
+                      final exam = filteredExamObjects[index];
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
+                        child: Card(
+                          color: Colors.white,
+                          elevation: 2,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        exam.title,
+                                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                                      ),
+                                    ),
+                                    Text(
+                                      exam.schedule.toLocal().toString().split(' ')[0],
+                                      style: const TextStyle(color: Colors.grey, fontSize: 14),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 8),
+                                Text('Teacher: 	${exam.teacher}', style: const TextStyle(fontSize: 15)),
+                                Text('Subject: 	${exam.subject}', style: const TextStyle(fontSize: 15)),
+                                Text('No. of Items: 	${exam.noOfItems.toInt()}', style: const TextStyle(fontSize: 15)),
+                                Text('Duration: 	${exam.duration.inMinutes} min', style: const TextStyle(fontSize: 15)),
+                                const SizedBox(height: 12),
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: ElevatedButton.icon(
+                                    onPressed: () {
+                                      // TODO: Implement navigation to exam taking page
+                                    },
+                                    icon: const Icon(Icons.play_arrow),
+                                    label: const Text('Take Exam'),
+                                    style: ElevatedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                      backgroundColor: Colors.green,
+                                      foregroundColor: Colors.white,
+                                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                      textStyle: const TextStyle(fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+          );
   }
 
   Widget _filterBySavedOrOnline() {
@@ -124,7 +187,7 @@ class _AvailableExamsState extends State<AvailableExams> {
                         'Saved Exams',
                         style: TextStyle(
                           fontWeight: _selectedFilter == 0 ? FontWeight.bold : FontWeight.normal,
-                          color: _selectedFilter == 0 ? const Color.fromARGB(255, 255, 255, 255): Colors.black,
+                          color: _selectedFilter == 0 ? const Color.fromARGB(255, 255, 255, 255) : Colors.black,
                           fontSize: 16,
                         ),
                       ),
@@ -143,7 +206,7 @@ class _AvailableExamsState extends State<AvailableExams> {
                         'Online Exams',
                         style: TextStyle(
                           fontWeight: _selectedFilter == 1 ? FontWeight.bold : FontWeight.normal,
-                          color:  _selectedFilter == 1 ? const Color.fromARGB(255, 255, 255, 255): Colors.black,
+                          color: _selectedFilter == 1 ? const Color.fromARGB(255, 255, 255, 255) : Colors.black,
                           fontSize: 16,
                         ),
                       ),
